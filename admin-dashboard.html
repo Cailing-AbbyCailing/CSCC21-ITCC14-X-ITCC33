@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alavanza Commercial Space - Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-water"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">Alavanza Commercial</h1>
+        <p class="brand-subtitle">WATER • LAUNDRY • PRINTING</p>
+      </div>
+    </div>
+
+    <!-- Portal Navigation Switcher -->
+    <div class="role-switcher-container">
+      <span class="role-label"><i class="fa-solid fa-user-shield"></i> Portal:</span>
+      <div class="toggle-buttons">
+        <a href="staff-dashboard.html" class="toggle-btn" style="text-decoration: none; display: inline-block;">Staff Dashboard</a>
+        <button class="toggle-btn active">Admin Dashboard</button>
+      </div>
+    </div>
+
+    <div class="user-profile">
+      <div class="user-info">
+        <span class="user-name">Admin Manager</span>
+        <span class="user-role">System Administrator</span>
+      </div>
+      <div class="avatar">
+        <i class="fa-solid fa-circle-user"></i>
+      </div>
+      <button class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="nav-section-title">ADMIN MENU</div>
+      <ul class="nav-list">
+        <li class="nav-item active" onclick="showSection('analytics', this)">
+          <i class="fa-solid fa-chart-pie"></i> <span>Executive Analytics</span>
+        </li>
+        <li class="nav-item" onclick="showSection('staff-mgmt', this)">
+          <i class="fa-solid fa-id-card"></i> <span>Staff Management</span>
+        </li>
+        <li class="nav-item" onclick="showSection('audit-logs', this)">
+          <i class="fa-solid fa-shield-halved"></i> <span>System Audit Logs</span>
+        </li>
+      </ul>
+
+      <div class="services-widget">
+        <div class="widget-title">Service Highlights</div>
+        <div class="service-pills">
+          <div class="pill"><i class="fa-solid fa-droplet"></i> Water Refilling</div>
+          <div class="pill"><i class="fa-solid fa-shirt"></i> Laundry Care</div>
+          <div class="pill"><i class="fa-solid fa-print"></i> Quick Printing</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      
+      <!-- EXECUTIVE ANALYTICS -->
+      <section id="analytics-section" class="section-pane active">
+        <div class="pane-header">
+          <div>
+            <h2>Executive Overview & Analytics</h2>
+            <p>Monitor revenue performance, service distribution, and store metrics</p>
+          </div>
+          <div class="date-badge">
+            <i class="fa-solid fa-calendar-day"></i> Today: <span id="current-date-str"></span>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon blue"><i class="fa-solid fa-coins"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Total Monthly Revenue</span>
+              <span class="kpi-value">₱124,500.00</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon green"><i class="fa-solid fa-boxes-packing"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Active Orders</span>
+              <span class="kpi-value">14</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon orange"><i class="fa-solid fa-users-viewfinder"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Total Clients</span>
+              <span class="kpi-value">128</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon cyan"><i class="fa-solid fa-truck-check"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Completed Fulfillment</span>
+              <span class="kpi-value">342</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-row">
+          <div class="analytics-card flex-2">
+            <h3>Revenue Distribution by Service</h3>
+            <div class="revenue-bars">
+              <div class="revenue-bar-item">
+                <div class="bar-label">
+                  <span><i class="fa-solid fa-droplet text-cyan"></i> Water Refilling</span>
+                  <strong>₱56,000.00</strong>
+                </div>
+                <div class="bar-track"><div class="bar-fill cyan-fill" style="width: 45%;"></div></div>
+              </div>
+              <div class="revenue-bar-item">
+                <div class="bar-label">
+                  <span><i class="fa-solid fa-shirt text-blue"></i> Laundry Care</span>
+                  <strong>₱43,500.00</strong>
+                </div>
+                <div class="bar-track"><div class="bar-fill blue-fill" style="width: 35%;"></div></div>
+              </div>
+              <div class="revenue-bar-item">
+                <div class="bar-label">
+                  <span><i class="fa-solid fa-print text-purple"></i> Document Printing</span>
+                  <strong>₱25,000.00</strong>
+                </div>
+                <div class="bar-track"><div class="bar-fill purple-fill" style="width: 20%;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="analytics-card flex-1">
+            <h3>Service Performance Breakdown</h3>
+            <ul class="stats-summary-list">
+              <li><span>Water Gallons Sold:</span> <strong>1,600 containers</strong></li>
+              <li><span>Laundry Weight Processed:</span> <strong>1,087 kg</strong></li>
+              <li><span>Pages Printed:</span> <strong>5,000 pages</strong></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAFF MANAGEMENT -->
+      <section id="staff-mgmt-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Staff Account Management</h2>
+            <p>Manage system permissions, staff accounts, and access roles</p>
+          </div>
+          <button class="action-btn primary" onclick="openModal('new-staff-modal')">
+            <i class="fa-solid fa-user-shield"></i> Add Staff Account
+          </button>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Staff ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Assigned Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>STF-01</strong></td>
+                <td>Abby Cailing</td>
+                <td>abby@alavanza.com</td>
+                <td><span class="status-badge in-progress">Store Supervisor</span></td>
+                <td><span class="status-badge ready">Active</span></td>
+                <td><button class="action-btn secondary sm">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SYSTEM AUDIT LOGS -->
+      <section id="audit-logs-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>System Audit Logs</h2>
+            <p>Track operational updates, price changes, and order status activities</p>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action performed</th>
+                <th>Module</th>
+                <th>Log Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-11-10 16:30</td>
+                <td><strong>Abby Cailing</strong></td>
+                <td>Created New Order</td>
+                <td>Order Mgmt</td>
+                <td>Order ORD-1005 created for Alex Neri</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div id="logout-modal" class="modal-overlay">
+    <div class="modal-card logout-card">
+      <div class="modal-header">
+        <h3>Signed Out</h3>
+      </div>
+      <div style="text-align: center; padding: 1rem 0;">
+        <div style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 0.8rem;">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.4rem;">You have logged out</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Thank you for using Alavanza Commercial Space Portal.</p>
+      </div>
+      <div class="modal-actions" style="justify-content: center; margin-top: 1rem;">
+        <button class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alavanza Commercial Space - Staff Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="top-nav">
+    <div class="brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-water"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">Alavanza Commercial</h1>
+        <p class="brand-subtitle">WATER • LAUNDRY • PRINTING</p>
+      </div>
+    </div>
+
+    <!-- Portal Navigation Switcher -->
+    <div class="role-switcher-container">
+      <span class="role-label"><i class="fa-solid fa-user-shield"></i> Portal:</span>
+      <div class="toggle-buttons">
+        <button class="toggle-btn active">Staff Dashboard</button>
+        <a href="admin-dashboard.html" class="toggle-btn" style="text-decoration: none; display: inline-block;">Admin Dashboard</a>
+      </div>
+    </div>
+
+    <div class="user-profile">
+      <div class="user-info">
+        <span class="user-name">Staff User</span>
+        <span class="user-role">Operations Staff</span>
+      </div>
+      <div class="avatar">
+        <i class="fa-solid fa-circle-user"></i>
+      </div>
+      <button class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="nav-section-title">STAFF MENU</div>
+      <ul class="nav-list">
+        <li class="nav-item active" onclick="showSection('orders', this)">
+          <i class="fa-solid fa-receipt"></i> <span>Order Management</span>
+        </li>
+        <li class="nav-item" onclick="showSection('services', this)">
+          <i class="fa-solid fa-tags"></i> <span>Services & Prices</span>
+        </li>
+        <li class="nav-item" onclick="showSection('customers', this)">
+          <i class="fa-solid fa-users"></i> <span>Customer Records</span>
+        </li>
+        <li class="nav-item" onclick="showSection('schedules', this)">
+          <i class="fa-solid fa-truck-ramp-box"></i> <span>Delivery Schedules</span>
+        </li>
+        <li class="nav-item" onclick="showSection('inventory', this)">
+          <i class="fa-solid fa-boxes-stacked"></i> <span>Supply Inventory</span>
+        </li>
+      </ul>
+
+      <div class="services-widget">
+        <div class="widget-title">Service Highlights</div>
+        <div class="service-pills">
+          <div class="pill"><i class="fa-solid fa-droplet"></i> Water Refilling</div>
+          <div class="pill"><i class="fa-solid fa-shirt"></i> Laundry Care</div>
+          <div class="pill"><i class="fa-solid fa-print"></i> Quick Printing</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+      
+      <!-- ORDER MANAGEMENT -->
+      <section id="orders-section" class="section-pane active">
+        <div class="pane-header">
+          <div>
+            <h2>Order Management</h2>
+            <p>View, update, and manage incoming customer service orders</p>
+          </div>
+          <button class="action-btn primary" onclick="openModal('new-order-modal')">
+            <i class="fa-solid fa-plus"></i> Create New Order
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search by Order ID or Customer Name...">
+          </div>
+          <div class="filter-group">
+            <select>
+              <option value="ALL">All Services</option>
+              <option value="Water Refilling">Water Refilling</option>
+              <option value="Laundry">Laundry Service</option>
+              <option value="Printing">Printing Service</option>
+            </select>
+            <select>
+              <option value="ALL">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Details</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ORD-1001</strong></td>
+                <td>Juan Dela Cruz</td>
+                <td>Water Refilling</td>
+                <td>5-Gallon Container Refill (x5)</td>
+                <td><strong>₱175.00</strong></td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                  <select class="form-select-sm">
+                    <option value="">Update Status...</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancel Order</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>ORD-1002</strong></td>
+                <td>Maria Santos</td>
+                <td>Laundry</td>
+                <td>Wash & Fold (x8 kg)</td>
+                <td><strong>₱320.00</strong></td>
+                <td><span class="status-badge in-progress">In Progress</span></td>
+                <td>
+                  <select class="form-select-sm">
+                    <option value="">Update Status...</option>
+                    <option value="In Progress" selected>In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancel Order</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SERVICES & PRICES -->
+      <section id="services-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Services & Pricing Catalog</h2>
+            <p>Configure pricing, units, and availability for business offerings</p>
+          </div>
+          <button class="action-btn primary" onclick="openModal('new-service-modal')">
+            <i class="fa-solid fa-plus"></i> Add New Service
+          </button>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div>
+              <div class="service-card-header">
+                <div class="service-icon"><i class="fa-solid fa-droplet"></i></div>
+                <span class="status-badge ready">Water Refilling</span>
+              </div>
+              <h4>5-Gallon Container Refill</h4>
+              <div class="service-price">₱35.00 <span style="font-size:0.75rem; color:var(--text-muted);">per container</span></div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <button class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
+            </div>
+          </div>
+          <div class="service-card">
+            <div>
+              <div class="service-card-header">
+                <div class="service-icon"><i class="fa-solid fa-shirt"></i></div>
+                <span class="status-badge ready">Laundry</span>
+              </div>
+              <h4>Wash & Fold Service</h4>
+              <div class="service-price">₱40.00 <span style="font-size:0.75rem; color:var(--text-muted);">per kg</span></div>
+            </div>
+            <div style="margin-top: 1rem;">
+              <button class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOMER RECORDS -->
+      <section id="customers-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Customer Directory</h2>
+            <p>Maintain registered customer accounts and order histories</p>
+          </div>
+          <button class="action-btn primary" onclick="openModal('new-customer-modal')">
+            <i class="fa-solid fa-user-plus"></i> Add Customer
+          </button>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search by name, phone, or email...">
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Full Name</th>
+                <th>Contact Phone</th>
+                <th>Email Address</th>
+                <th>Address</th>
+                <th>Total Orders</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CUST-01</strong></td>
+                <td>Juan Dela Cruz</td>
+                <td>09171234567</td>
+                <td>juan@gmail.com</td>
+                <td>Block 4 Lot 12, CDO City</td>
+                <td><strong>5 orders</strong></td>
+                <td><button class="action-btn secondary sm">View Record</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- DELIVERY SCHEDULES -->
+      <section id="schedules-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Delivery & Pickup Schedule</h2>
+            <p>Manage order dispatch, fulfillment status, and delivery routes</p>
+          </div>
+        </div>
+
+        <div class="schedules-grid">
+          <div class="schedule-card">
+            <h3><i class="fa-solid fa-truck-fast"></i> Out for Delivery</h3>
+            <div class="schedule-list">
+              <div class="schedule-item">
+                <div>
+                  <strong>ORD-1004 - Sarah Dalaota</strong>
+                  <p style="font-size:0.75rem; color:var(--text-muted);">Water Refilling • Out for Delivery</p>
+                </div>
+                <button class="action-btn primary sm">Mark Delivered</button>
+              </div>
+            </div>
+          </div>
+          <div class="schedule-card">
+            <h3><i class="fa-solid fa-box-archive"></i> Ready for Station Pickup</h3>
+            <div class="schedule-list">
+              <div class="schedule-item">
+                <div>
+                  <strong>ORD-1005 - Alex Neri</strong>
+                  <p style="font-size:0.75rem; color:var(--text-muted);">Laundry • Ready for Pickup</p>
+                </div>
+                <button class="action-btn primary sm">Handover</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPPLY INVENTORY -->
+      <section id="inventory-section" class="section-pane">
+        <div class="pane-header">
+          <div>
+            <h2>Supply Inventory Management</h2>
+            <p>Track store inventory levels, stock status, and low supply alerts</p>
+          </div>
+          <button class="action-btn primary" onclick="openModal('new-inventory-modal')">
+            <i class="fa-solid fa-plus"></i> Add Supply Item
+          </button>
+        </div>
+
+        <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+          <div class="kpi-card">
+            <div class="kpi-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Total Tracked Items</span>
+              <span class="kpi-value">8</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Well Stocked Items</span>
+              <span class="kpi-value">5</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-details">
+              <span class="kpi-label">Low / Running Out</span>
+              <span class="kpi-value">3</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Item Code</th>
+                <th>Supply Name</th>
+                <th>Category</th>
+                <th>Current Quantity</th>
+                <th>Threshold Limit</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>INV-101</strong></td>
+                <td>5-Gallon Bottle Caps</td>
+                <td><span class="status-badge ready">Water Refilling</span></td>
+                <td><strong>450 caps</strong></td>
+                <td>100 caps</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td><button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button></td>
+              </tr>
+              <tr>
+                <td><strong>INV-102</strong></td>
+                <td>Purified Filter Cartridges</td>
+                <td><span class="status-badge ready">Water Refilling</span></td>
+                <td><strong>3 units</strong></td>
+                <td>5 units</td>
+                <td><span class="status-badge low-stock">⚠️ Running Low</span></td>
+                <td><button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODALS -->
+  <div id="logout-modal" class="modal-overlay">
+    <div class="modal-card logout-card">
+      <div class="modal-header">
+        <h3>Signed Out</h3>
+      </div>
+      <div style="text-align: center; padding: 1rem 0;">
+        <div style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 0.8rem;">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.4rem;">You have logged out</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Thank you for using Alavanza Commercial Space Portal.</p>
+      </div>
+      <div class="modal-actions" style="justify-content: center; margin-top: 1rem;">
+        <button class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
