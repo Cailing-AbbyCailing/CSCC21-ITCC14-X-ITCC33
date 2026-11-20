@@ -140,21 +140,23 @@
                             <div class="form-group">
                                 <label>Schedule Pickup / Delivery?</label>
                                 <select id="waterDeliveryToggle" onchange="toggleSchedule('water')">
-                                    <option value="no">Walk-In</option>
-                                    <option value="yes">Scheduled Pickup</option>
-                                    <option value="yes">Scheduled Delivery</option>
+                                    <option value="no">Home Pickup & Delivery </option>
+                                    <option value="yes">Home Pickup & Station Pickup</option>
                                 </select>
                             </div>
                             <div class="form-group" id="waterScheduleBox" style="display: none;">
                                 <label>Select Date & Time</label>
                                 <input type="datetime-local">
                             </div>
+                            <div class="form-group" id="waterAddressBox" style="display: none;">
+                                <label>Delivery Address / Location</label>
+                                <input type="text" placeholder="Enter your address">
+                            </div>
                             <div class="form-group">
                                 <label>Choose Payment Method</label>
                                 <select>
-                                    <option>Cash on Delivery / Walk-In (COD)</option>
+                                    <option>Cash on Delivery (COD)</option>
                                     <option>GCash Online Payment</option>
-                                    <option>Other Online Gateway</option>
                                 </select>
                             </div>
                         </div>
@@ -201,21 +203,23 @@
                             <div class="form-group">
                                 <label>Schedule Pickup / Delivery?</label>
                                 <select id="laundryDeliveryToggle" onchange="toggleSchedule('laundry')">
-                                    <option value="no">Walk-In</option>
-                                    <option value="yes">Scheduled Pickup</option>
-                                    <option value="yes">Scheduled Delivery</option>
+                                    <option value="no">Home Pickup & Delivery</option>
+                                    <option value="yes">Home Pickup & Station Pickup</option>
                                 </select>
                             </div>
                             <div class="form-group" id="laundryScheduleBox" style="display: none;">
                                 <label>Select Date & Time</label>
                                 <input type="datetime-local">
                             </div>
+                            <div class="form-group" id="laundryAddressBox" style="display: none;">
+                                <label>Delivery Address / Location</label>
+                                <input type="text" placeholder="Enter your address">
+                            </div>
                             <div class="form-group">
                                 <label>Choose Payment Method</label>
                                 <select>
-                                    <option>Cash on Delivery / Walk-In (COD)</option>
+                                    <option>Cash on Delivery (COD)</option>
                                     <option>GCash Online Payment</option>
-                                    <option>Other Online Gateway</option>
                                 </select>
                             </div>
                         </div>
@@ -303,49 +307,80 @@
     </div>
 
     <!-- UI Scripts -->
-    <script>
-        function switchView(viewId, event) {
-            document.querySelectorAll('.panel-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.sidebar-nav .nav-item').forEach(btn => btn.classList.remove('active'));
+    <script src="./customer.js"></script>
+        
+<!-- Floating Chat Bubble Button (Shown when chat is minimized) -->
+<button id="chat-toggle-btn" type="button" onclick="toggleCustomerChat(true)" 
+  style="position:fixed; bottom:20px; right:20px; background:#0284c7; color:#fff; border:none; border-radius:50px; padding:12px 18px; font-weight:bold; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,0.2); cursor:pointer; z-index:9999; display:flex; align-items:center; gap:8px;">
+  <i class="fa-solid fa-comments"></i> Chat Support
+</button>
 
-            document.getElementById(viewId).classList.add('active');
-            event.currentTarget.classList.add('active');
+<!-- Floating Customer Support Chat Window (Hidden by default) -->
+<div id="customer-chat-widget" 
+  style="display:none; position:fixed; bottom:20px; right:20px; width:320px; background:#fff; border:1px solid #cbd5e1; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:9999; font-family:sans-serif;">
+  
+  <div style="background:#0f172a; color:#fff; padding:12px 15px; border-radius:10px 10px 0 0; font-weight:bold; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <span>Customer Support</span>
+      <span style="font-size:11px; color:#38bdf8; margin-left:6px;">Online</span>
+    </div>
+    <!-- Minimize / Hide Button -->
+    <button type="button" onclick="toggleCustomerChat(false)" title="Minimize chat"
+      style="background:transparent; border:none; color:#cbd5e1; font-size:16px; cursor:pointer; padding:0 4px;">
+      <i class="fa-solid fa-minus"></i>
+    </button>
+  </div>
+  
+  <div id="customer-chat-messages" style="height:250px; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; background:#f8fafc;"></div>
+  
+  <form onsubmit="sendCustomerMsg(event)" style="display:flex; border-top:1px solid #e2e8f0; padding:8px;">
+    <input type="text" id="customer-chat-input" placeholder="Type a message..." style="flex:1; border:none; outline:none; padding:6px;" required>
+    <button type="submit" style="background:#0284c7; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">Send</button>
+  </form>
+</div>
 
-            const titles = {
-                'choose-service': ['Main Menu (Home)', 'Select your service, fill out order details, and track your requests.'],
-                'order-tracker': ['Track Order Status', 'Monitor active water orders and laundry turnaround states.'],
-                'account-settings': ['Account Settings', 'Manage your profile and account preferences.']
-            };
-            document.getElementById('header-title').innerText = titles[viewId][0];
-            document.getElementById('header-desc').innerText = titles[viewId][1];
-        }
+<script src="./chat-api.js"></script>
+<script>
+  function toggleCustomerChat(show) {
+    const widget = document.getElementById('customer-chat-widget');
+    const toggleBtn = document.getElementById('chat-toggle-btn');
+    if (show) {
+      widget.style.display = 'block';
+      toggleBtn.style.display = 'none';
+      renderCustomerChat();
+    } else {
+      widget.style.display = 'none';
+      toggleBtn.style.display = 'flex';
+    }
+  }
 
-        function selectServiceTab(type) {
-            const promptBox = document.getElementById('no-service-prompt');
-            if (promptBox) {
-                promptBox.style.display = 'none';
-            }
+  function renderCustomerChat() {
+    const box = document.getElementById('customer-chat-messages');
+    const msgs = ChatAPI.getMessages('support');
+    box.innerHTML = msgs.map(m => `
+      <div style="align-self:${m.senderRole === 'customer' ? 'flex-end' : 'flex-start'}; background:${m.senderRole === 'customer' ? '#0284c7' : '#e2e8f0'}; color:${m.senderRole === 'customer' ? '#fff' : '#0f172a'}; padding:8px 12px; border-radius:8px; max-width:80%; font-size:13px;">
+        <div style="font-size:10px; opacity:0.8; margin-bottom:2px;">${m.senderName} • ${m.timestamp}</div>
+        <div>${m.text}</div>
+      </div>
+    `).join('');
+    box.scrollTop = box.scrollHeight;
+  }
 
-            document.getElementById('tab-water-btn').classList.remove('active');
-            document.getElementById('tab-laundry-btn').classList.remove('active');
+  function sendCustomerMsg(e) {
+    e.preventDefault();
+    const input = document.getElementById('customer-chat-input');
+    ChatAPI.sendMessage({
+      channel: 'support',
+      senderName: 'Juan Dela Cruz',
+      senderRole: 'customer',
+      text: input.value
+    });
+    input.value = '';
+    renderCustomerChat();
+  }
 
-            document.getElementById('water-form-content').classList.remove('active');
-            document.getElementById('laundry-form-content').classList.remove('active');
-
-            if (type === 'water') {
-                document.getElementById('tab-water-btn').classList.add('active');
-                document.getElementById('water-form-content').classList.add('active');
-            } else if (type === 'laundry') {
-                document.getElementById('tab-laundry-btn').classList.add('active');
-                document.getElementById('laundry-form-content').classList.add('active');
-            }
-        }
-
-        function toggleSchedule(service) {
-            const toggleVal = document.getElementById(service + 'DeliveryToggle').value;
-            const box = document.getElementById(service + 'ScheduleBox');
-            box.style.display = (toggleVal === 'yes') ? 'flex' : 'none';
-        }
-    </script>
+  ChatAPI.onNewMessage(renderCustomerChat);
+  document.addEventListener('DOMContentLoaded', renderCustomerChat);
+</script>
 </body>
 </html>
