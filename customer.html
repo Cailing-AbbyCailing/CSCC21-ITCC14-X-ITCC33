@@ -140,8 +140,8 @@
                             <div class="form-group">
                                 <label>Schedule Pickup / Delivery?</label>
                                 <select id="waterDeliveryToggle" onchange="toggleSchedule('water')">
-                                    <option value="no">Walk-In/Pickup</option>
-                                    <option value="yes">Scheduled Delivery</option>
+                                    <option value="no">Home Pickup & Delivery </option>
+                                    <option value="yes">Home Pickup & Station Pickup</option>
                                 </select>
                             </div>
                             <div class="form-group" id="waterScheduleBox" style="display: none;">
@@ -155,7 +155,7 @@
                             <div class="form-group">
                                 <label>Choose Payment Method</label>
                                 <select>
-                                    <option>Cash on Delivery / Walk-In (COD)</option>
+                                    <option>Cash on Delivery (COD)</option>
                                     <option>GCash Online Payment</option>
                                 </select>
                             </div>
@@ -203,8 +203,8 @@
                             <div class="form-group">
                                 <label>Schedule Pickup / Delivery?</label>
                                 <select id="laundryDeliveryToggle" onchange="toggleSchedule('laundry')">
-                                    <option value="no">Walk-In/Pickup</option>
-                                    <option value="yes">Scheduled Delivery</option>
+                                    <option value="no">Home Pickup & Delivery</option>
+                                    <option value="yes">Home Pickup & Station Pickup</option>
                                 </select>
                             </div>
                             <div class="form-group" id="laundryScheduleBox" style="display: none;">
@@ -218,7 +218,7 @@
                             <div class="form-group">
                                 <label>Choose Payment Method</label>
                                 <select>
-                                    <option>Cash on Delivery / Walk-In (COD)</option>
+                                    <option>Cash on Delivery (COD)</option>
                                     <option>GCash Online Payment</option>
                                 </select>
                             </div>
@@ -354,6 +354,18 @@
             if (scheduleBox) scheduleBox.style.display = showFields;
             if (addressBox) addressBox.style.display = showFields;
         }
+</script>
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6b005d7b5b55603c92176e21/1k7smqav7';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
     </script>
 </body>
 </html>
