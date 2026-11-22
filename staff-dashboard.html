@@ -8,11 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="stylesa.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- TOP HEADER -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
   <header class="top-nav">
     <div class="brand">
       <div class="brand-logo">
@@ -24,24 +28,15 @@
       </div>
     </div>
 
-    <!-- Portal Navigation Switcher -->
-    <div class="role-switcher-container">
-      <span class="role-label"><i class="fa-solid fa-user-shield"></i> Portal:</span>
-      <div class="toggle-buttons">
-        <button type="button" class="toggle-btn active">Staff Dashboard</button>
-        <a href="admin-dashboard.html" class="toggle-btn" style="text-decoration: none; display: inline-block;">Admin Dashboard</a>
-      </div>
-    </div>
-
     <div class="user-profile">
       <div class="user-info">
-        <span class="user-name" id="current-user-name">Staff User</span>
+        <span class="user-name">Staff User</span>
         <span class="user-role">Operations Staff</span>
       </div>
       <div class="avatar">
         <i class="fa-solid fa-circle-user"></i>
       </div>
-      <button type="button" class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
+      <button class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
         <i class="fa-solid fa-right-from-bracket"></i> Logout
       </button>
     </div>
@@ -67,9 +62,6 @@
         <li class="nav-item" onclick="showSection('inventory', this)">
           <i class="fa-solid fa-boxes-stacked"></i> <span>Supply Inventory</span>
         </li>
-        <li class="nav-item" onclick="toggleStaffChat(true)">
-          <i class="fa-solid fa-comments"></i> <span>Live Chat Console</span>
-        </li>
       </ul>
 
       <div class="services-widget">
@@ -92,7 +84,7 @@
             <h2>Order Management</h2>
             <p>View, update, and manage incoming customer service orders</p>
           </div>
-          <button type="button" class="action-btn primary" onclick="openModal('new-order-modal')">
+          <button class="action-btn primary" onclick="openModal('new-order-modal')">
             <i class="fa-solid fa-plus"></i> Create New Order
           </button>
         </div>
@@ -178,7 +170,7 @@
             <h2>Services & Pricing Catalog</h2>
             <p>Configure pricing, units, and availability for business offerings</p>
           </div>
-          <button type="button" class="action-btn primary" onclick="openModal('new-service-modal')">
+          <button class="action-btn primary" onclick="openModal('new-service-modal')">
             <i class="fa-solid fa-plus"></i> Add New Service
           </button>
         </div>
@@ -194,7 +186,7 @@
               <div class="service-price">₱35.00 <span style="font-size:0.75rem; color:var(--text-muted);">per container</span></div>
             </div>
             <div style="margin-top: 1rem;">
-              <button type="button" class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
+              <button class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
             </div>
           </div>
           <div class="service-card">
@@ -207,7 +199,7 @@
               <div class="service-price">₱40.00 <span style="font-size:0.75rem; color:var(--text-muted);">per kg</span></div>
             </div>
             <div style="margin-top: 1rem;">
-              <button type="button" class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
+              <button class="action-btn secondary sm"><i class="fa-solid fa-pen"></i> Update Price</button>
             </div>
           </div>
         </div>
@@ -220,7 +212,7 @@
             <h2>Customer Directory</h2>
             <p>Maintain registered customer accounts and order histories</p>
           </div>
-          <button type="button" class="action-btn primary" onclick="openModal('new-customer-modal')">
+          <button class="action-btn primary" onclick="openModal('new-customer-modal')">
             <i class="fa-solid fa-user-plus"></i> Add Customer
           </button>
         </div>
@@ -253,7 +245,7 @@
                 <td>juan@gmail.com</td>
                 <td>Block 4 Lot 12, CDO City</td>
                 <td><strong>5 orders</strong></td>
-                <td><button type="button" class="action-btn secondary sm">View Record</button></td>
+                <td><button class="action-btn secondary sm">View Record</button></td>
               </tr>
             </tbody>
           </table>
@@ -278,7 +270,7 @@
                   <strong>ORD-1004 - Sarah Dalaota</strong>
                   <p style="font-size:0.75rem; color:var(--text-muted);">Water Refilling • Out for Delivery</p>
                 </div>
-                <button type="button" class="action-btn primary sm">Mark Delivered</button>
+                <button class="action-btn primary sm">Mark Delivered</button>
               </div>
             </div>
           </div>
@@ -290,46 +282,72 @@
                   <strong>ORD-1005 - Alex Neri</strong>
                   <p style="font-size:0.75rem; color:var(--text-muted);">Laundry • Ready for Pickup</p>
                 </div>
-                <button type="button" class="action-btn primary sm">Handover</button>
+                <button class="action-btn primary sm">Handover</button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SUPPLY INVENTORY -->
+      <!-- SUPPLY INVENTORY (WATER, LAUNDRY, PRINTING) -->
       <section id="inventory-section" class="section-pane">
         <div class="pane-header">
           <div>
             <h2>Supply Inventory Management</h2>
-            <p>Track store inventory levels, stock status, and low supply alerts</p>
+            <p>Track Laundry, Water Refilling, and Printing supplies — stock deductions handled by backend</p>
           </div>
-          <button type="button" class="action-btn primary" onclick="openModal('new-inventory-modal')">
-            <i class="fa-solid fa-plus"></i> Add Supply Item
-          </button>
+          <div style="display: flex; gap: 0.6rem;">
+            <button class="action-btn secondary" onclick="openModal('log-usage-modal')">
+              <i class="fa-solid fa-minus"></i> Record Usage
+            </button>
+            <button class="action-btn primary" onclick="openModal('new-inventory-modal')">
+              <i class="fa-solid fa-plus"></i> Add Supply Item
+            </button>
+          </div>
         </div>
 
         <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
           <div class="kpi-card">
-            <div class="kpi-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="kpi-icon cyan"><i class="fa-solid fa-droplet"></i></div>
             <div class="kpi-details">
-              <span class="kpi-label">Total Tracked Items</span>
-              <span class="kpi-value">8</span>
+              <span class="kpi-label">Water Refilling Supplies</span>
+              <span class="kpi-value">3 Items</span>
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="kpi-icon blue"><i class="fa-solid fa-shirt"></i></div>
             <div class="kpi-details">
-              <span class="kpi-label">Well Stocked Items</span>
-              <span class="kpi-value">5</span>
+              <span class="kpi-label">Laundry Supplies</span>
+              <span class="kpi-value">3 Items</span>
             </div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-icon orange"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-icon orange"><i class="fa-solid fa-print"></i></div>
             <div class="kpi-details">
-              <span class="kpi-label">Low / Running Out</span>
-              <span class="kpi-value">3</span>
+              <span class="kpi-label">Printing Supplies</span>
+              <span class="kpi-value">3 Items</span>
             </div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search supply name or code...">
+          </div>
+          <div class="filter-group">
+            <select>
+              <option value="ALL">All Services</option>
+              <option value="Water Refilling">Water Refilling</option>
+              <option value="Laundry">Laundry</option>
+              <option value="Printing">Printing</option>
+            </select>
+            <select>
+              <option value="ALL">All Stock Statuses</option>
+              <option value="In Stock">In Stock</option>
+              <option value="Low Stock">Low / Running Out</option>
+              <option value="Out of Stock">Out of Stock</option>
+            </select>
           </div>
         </div>
 
@@ -347,70 +365,235 @@
               </tr>
             </thead>
             <tbody>
+              <!-- WATER REFILLING -->
               <tr>
-                <td><strong>INV-101</strong></td>
-                <td>5-Gallon Bottle Caps</td>
+                <td><strong>WTR-01</strong></td>
+                <td>5-Gallon Bottle Caps & Seals</td>
                 <td><span class="status-badge ready">Water Refilling</span></td>
-                <td><strong>450 caps</strong></td>
-                <td>100 caps</td>
+                <td><strong>450 pcs</strong></td>
+                <td>100 pcs</td>
                 <td><span class="status-badge in-stock">In Stock</span></td>
-                <td><button type="button" class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
               </tr>
               <tr>
-                <td><strong>INV-102</strong></td>
+                <td><strong>WTR-02</strong></td>
                 <td>Purified Filter Cartridges</td>
                 <td><span class="status-badge ready">Water Refilling</span></td>
                 <td><strong>3 units</strong></td>
                 <td>5 units</td>
                 <td><span class="status-badge low-stock">⚠️ Running Low</span></td>
-                <td><button type="button" class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>WTR-03</strong></td>
+                <td>Food-Grade Sanitizing Solution</td>
+                <td><span class="status-badge ready">Water Refilling</span></td>
+                <td><strong>18 liters</strong></td>
+                <td>5 liters</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+
+              <!-- LAUNDRY -->
+              <tr>
+                <td><strong>LND-01</strong></td>
+                <td>Commercial Liquid Detergent</td>
+                <td><span class="status-badge in-progress">Laundry</span></td>
+                <td><strong>38 liters</strong></td>
+                <td>10 liters</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>LND-02</strong></td>
+                <td>Fabric Conditioner</td>
+                <td><span class="status-badge in-progress">Laundry</span></td>
+                <td><strong>4 liters</strong></td>
+                <td>8 liters</td>
+                <td><span class="status-badge low-stock">⚠️ Running Low</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>LND-03</strong></td>
+                <td>Laundry Packaging Bags</td>
+                <td><span class="status-badge in-progress">Laundry</span></td>
+                <td><strong>210 pcs</strong></td>
+                <td>50 pcs</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+
+              <!-- PRINTING -->
+              <tr>
+                <td><strong>PRT-01</strong></td>
+                <td>A4 Bond Paper Reams (70gsm)</td>
+                <td><span class="status-badge pending">Printing</span></td>
+                <td><strong>24 reams</strong></td>
+                <td>10 reams</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>PRT-02</strong></td>
+                <td>Printer Ink Bottles (CMYK Set)</td>
+                <td><span class="status-badge pending">Printing</span></td>
+                <td><strong>2 sets</strong></td>
+                <td>3 sets</td>
+                <td><span class="status-badge low-stock">⚠️ Running Low</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>PRT-03</strong></td>
+                <td>Photo & Glossy Paper Packs</td>
+                <td><span class="status-badge pending">Printing</span></td>
+                <td><strong>15 packs</strong></td>
+                <td>5 packs</td>
+                <td><span class="status-badge in-stock">In Stock</span></td>
+                <td>
+                  <button class="action-btn secondary sm" onclick="openModal('log-usage-modal')"><i class="fa-solid fa-minus"></i> Deduct</button>
+                  <button class="action-btn primary sm"><i class="fa-solid fa-plus"></i> Restock</button>
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Recent Usage Deductions Feed -->
+        <div class="analytics-card" style="margin-top: 1.5rem;">
+          <h3><i class="fa-solid fa-clock-rotate-left text-cyan"></i> Recent Usage Deductions</h3>
+          <ul class="stats-summary-list">
+            <li>
+              <span><strong>Laundry</strong> • Commercial Liquid Detergent (<em>Order #ORD-1002</em>)</span>
+              <span class="status-badge low-stock">-1.5 liters deducted</span>
+            </li>
+            <li>
+              <span><strong>Printing</strong> • A4 Bond Paper Reams (<em>Order #ORD-1003</em>)</span>
+              <span class="status-badge in-stock">-0.25 reams deducted</span>
+            </li>
+            <li>
+              <span><strong>Water Refilling</strong> • 5-Gallon Bottle Caps & Seals (<em>Order #ORD-1001</em>)</span>
+              <span class="status-badge in-stock">-5 pcs deducted</span>
+            </li>
+          </ul>
         </div>
       </section>
 
     </main>
   </div>
 
-  <!-- FLOATING CHAT TOGGLE BUTTON (Shown when console is hidden) -->
-  <button id="staff-chat-toggle-btn" type="button" onclick="toggleStaffChat(true)"
-    style="position:fixed; bottom:20px; right:20px; background:#0284c7; color:#fff; border:none; border-radius:50px; padding:12px 18px; font-weight:bold; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,0.25); cursor:pointer; z-index:9999; display:flex; align-items:center; gap:8px;">
-    <i class="fa-solid fa-comments"></i> Live Chat Console
-  </button>
-
-  <!-- COLLAPSIBLE LIVE MESSAGING CONSOLE (Hidden by default) -->
-  <div id="staff-chat-console" class="chat-console"
-    style="display:none; position:fixed; bottom:20px; right:20px; width:420px; max-width:92vw; background:#1e293b; color:#fff; border:1px solid #334155; border-radius:12px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.35); z-index:9999;">
-
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0; font-size:16px;">Live Messaging Console</h3>
-      <button type="button" onclick="toggleStaffChat(false)" title="Minimize chat"
-        style="background:transparent; border:none; color:#94a3b8; font-size:16px; cursor:pointer; padding:2px 6px;">
-        <i class="fa-solid fa-minus"></i>
-      </button>
+  <!-- MODALS -->
+  <div id="log-usage-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Record Used Supply Item</h3>
+        <button class="close-btn" onclick="closeModal('log-usage-modal')">&times;</button>
+      </div>
+      <form onsubmit="handleFormSubmit(event, 'Usage deduction submitted to backend!')">
+        <div class="form-group">
+          <label>Service Category</label>
+          <select required>
+            <option value="Water Refilling">Water Refilling</option>
+            <option value="Laundry">Laundry</option>
+            <option value="Printing">Printing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Supply Item</label>
+          <select required>
+            <option value="WTR-01">5-Gallon Bottle Caps & Seals (WTR-01)</option>
+            <option value="WTR-02">Purified Filter Cartridges (WTR-02)</option>
+            <option value="WTR-03">Food-Grade Sanitizing Solution (WTR-03)</option>
+            <option value="LND-01">Commercial Liquid Detergent (LND-01)</option>
+            <option value="LND-02">Fabric Conditioner (LND-02)</option>
+            <option value="LND-03">Laundry Packaging Bags (LND-03)</option>
+            <option value="PRT-01">A4 Bond Paper Reams (PRT-01)</option>
+            <option value="PRT-02">Printer Ink Bottles (PRT-02)</option>
+            <option value="PRT-03">Photo & Glossy Paper Packs (PRT-03)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Quantity Used (to Deduct)</label>
+            <input type="number" step="0.01" min="0.01" placeholder="e.g. 2" required />
+          </div>
+          <div class="form-group">
+            <label>Order / Job Reference (Optional)</label>
+            <input type="text" placeholder="e.g. ORD-1002" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="action-btn secondary" onclick="closeModal('log-usage-modal')">Cancel</button>
+          <button type="submit" class="action-btn primary">Confirm Deduction</button>
+        </div>
+      </form>
     </div>
-
-    <div style="display:flex; gap:6px; margin-bottom:10px;">
-      <button type="button" id="tab-support-btn" onclick="switchChatChannel('support')"
-        style="flex:1; padding:6px 10px; border-radius:6px; border:none; background:#0284c7; color:#fff; font-weight:600; font-size:12px; cursor:pointer;">
-        Customer Support
-      </button>
-      <button type="button" id="tab-internal-btn" onclick="switchChatChannel('internal')"
-        style="flex:1; padding:6px 10px; border-radius:6px; border:none; background:#334155; color:#cbd5e1; font-weight:600; font-size:12px; cursor:pointer;">
-        Staff ↔ Admin Chat
-      </button>
-    </div>
-
-    <div id="staff-chat-messages" style="height:240px; overflow-y:auto; background:#0f172a; padding:12px; border-radius:8px; display:flex; flex-direction:column; gap:8px; margin-bottom:10px;"></div>
-
-    <form onsubmit="sendStaffOrAdminMsg(event)" style="display:flex; gap:8px;">
-      <input type="text" id="staff-chat-input" placeholder="Write a reply..." style="flex:1; padding:8px 10px; border-radius:6px; border:1px solid #334155; background:#0f172a; color:#fff; outline:none;" required>
-      <button type="submit" style="background:#0284c7; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Send</button>
-    </form>
   </div>
 
-  <!-- MODALS -->
+  <div id="new-inventory-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add Supply Item</h3>
+        <button class="close-btn" onclick="closeModal('new-inventory-modal')">&times;</button>
+      </div>
+      <form onsubmit="handleFormSubmit(event, 'New supply item submitted to backend!')">
+        <div class="form-group">
+          <label>Service Category</label>
+          <select required>
+            <option value="Water Refilling">Water Refilling</option>
+            <option value="Laundry">Laundry</option>
+            <option value="Printing">Printing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Supply Name</label>
+          <input type="text" placeholder="e.g. Commercial Bleach" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Current Quantity</label>
+            <input type="number" step="0.01" min="0" placeholder="50" required />
+          </div>
+          <div class="form-group">
+            <label>Threshold Limit</label>
+            <input type="number" step="0.01" min="0" placeholder="10" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Unit Label</label>
+          <input type="text" placeholder="e.g. liters / pcs / reams" required />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="action-btn secondary" onclick="closeModal('new-inventory-modal')">Cancel</button>
+          <button type="submit" class="action-btn primary">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div id="logout-modal" class="modal-overlay">
     <div class="modal-card logout-card">
       <div class="modal-header">
@@ -424,93 +607,11 @@
         <p style="color: var(--text-muted); font-size: 0.85rem;">Thank you for using Alavanza Commercial Space Portal.</p>
       </div>
       <div class="modal-actions" style="justify-content: center; margin-top: 1rem;">
-        <button type="button" class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
+        <button class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
       </div>
     </div>
   </div>
 
-  <script src="./chat-api.js"></script>
-  <script>
-    let activeChannel = 'support';
-
-    function toggleStaffChat(show) {
-      const consoleBox = document.getElementById('staff-chat-console');
-      const toggleBtn = document.getElementById('staff-chat-toggle-btn');
-      if (show) {
-        consoleBox.style.display = 'block';
-        toggleBtn.style.display = 'none';
-        renderStaffChat();
-      } else {
-        consoleBox.style.display = 'none';
-        toggleBtn.style.display = 'flex';
-      }
-    }
-
-    function switchChatChannel(channel) {
-      activeChannel = channel;
-      const supportBtn = document.getElementById('tab-support-btn');
-      const internalBtn = document.getElementById('tab-internal-btn');
-
-      if (channel === 'support') {
-        supportBtn.style.background = '#0284c7';
-        supportBtn.style.color = '#fff';
-        internalBtn.style.background = '#334155';
-        internalBtn.style.color = '#cbd5e1';
-      } else {
-        internalBtn.style.background = '#0284c7';
-        internalBtn.style.color = '#fff';
-        supportBtn.style.background = '#334155';
-        supportBtn.style.color = '#cbd5e1';
-      }
-
-      renderStaffChat();
-    }
-
-    function renderStaffChat() {
-      const box = document.getElementById('staff-chat-messages');
-      if (!box || typeof ChatAPI === 'undefined') return;
-      const msgs = ChatAPI.getMessages(activeChannel);
-      box.innerHTML = msgs.map(m => `
-        <div style="background:#1e293b; padding:8px 12px; border-radius:6px; border-left:3px solid ${m.senderRole === 'customer' ? '#38bdf8' : '#22c55e'};">
-          <div style="font-size:11px; color:#94a3b8;"><strong>${m.senderName}</strong> (${m.senderRole.toUpperCase()}) • ${m.timestamp}</div>
-          <div style="margin-top:4px; font-size:14px;">${m.text}</div>
-        </div>
-      `).join('');
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function sendStaffOrAdminMsg(e) {
-      e.preventDefault();
-      const input = document.getElementById('staff-chat-input');
-      if (!input || !input.value.trim() || typeof ChatAPI === 'undefined') return;
-
-      const adminBtn = document.getElementById('btn-admin-view');
-      const nameEl = document.getElementById('current-user-name');
-
-      const currentRole = adminBtn
-        ? (adminBtn.classList.contains('active') ? 'admin' : 'staff')
-        : 'staff';
-
-      const currentName = nameEl && nameEl.textContent.trim()
-        ? nameEl.textContent.trim()
-        : (currentRole === 'admin' ? 'Admin Manager' : 'Staff User');
-
-      ChatAPI.sendMessage({
-        channel: activeChannel,
-        senderName: currentName,
-        senderRole: currentRole,
-        text: input.value
-      });
-
-      input.value = '';
-      renderStaffChat();
-    }
-
-    if (typeof ChatAPI !== 'undefined') {
-      ChatAPI.onNewMessage(renderStaffChat);
-    }
-    document.addEventListener('DOMContentLoaded', renderStaffChat);
-  </script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -8,11 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="stylesa.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- TOP HEADER -->
   <header class="top-nav">
     <div class="brand">
       <div class="brand-logo">
@@ -24,31 +23,21 @@
       </div>
     </div>
 
-    <!-- Portal Navigation Switcher -->
-    <div class="role-switcher-container">
-      <span class="role-label"><i class="fa-solid fa-user-shield"></i> Portal:</span>
-      <div class="toggle-buttons">
-        <a href="staff-dashboard.html" class="toggle-btn" style="text-decoration: none; display: inline-block;">Staff Dashboard</a>
-        <button type="button" class="toggle-btn active">Admin Dashboard</button>
-      </div>
-    </div>
-
     <div class="user-profile">
       <div class="user-info">
-        <span class="user-name" id="current-user-name">Admin Manager</span>
+        <span class="user-name">Admin Manager</span>
         <span class="user-role">System Administrator</span>
       </div>
       <div class="avatar">
         <i class="fa-solid fa-circle-user"></i>
       </div>
-      <button type="button" class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
+      <button class="logout-btn" onclick="openModal('logout-modal')" title="Sign out">
         <i class="fa-solid fa-right-from-bracket"></i> Logout
       </button>
     </div>
   </header>
 
   <div class="app-layout">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="nav-section-title">ADMIN MENU</div>
       <ul class="nav-list">
@@ -60,9 +49,6 @@
         </li>
         <li class="nav-item" onclick="showSection('audit-logs', this)">
           <i class="fa-solid fa-shield-halved"></i> <span>System Audit Logs</span>
-        </li>
-        <li class="nav-item" onclick="toggleAdminChat(true)">
-          <i class="fa-solid fa-comments"></i> <span>Live Chat Console</span>
         </li>
       </ul>
 
@@ -76,10 +62,8 @@
       </div>
     </aside>
 
-    <!-- CONTENT -->
     <main class="content">
 
-      <!-- EXECUTIVE ANALYTICS -->
       <section id="analytics-section" class="section-pane active">
         <div class="pane-header">
           <div>
@@ -167,7 +151,7 @@
             <h2>Staff Account Management</h2>
             <p>Manage system permissions, staff accounts, and access roles</p>
           </div>
-          <button type="button" class="action-btn primary" onclick="openModal('new-staff-modal')">
+          <button class="action-btn primary" onclick="openModal('new-staff-modal')">
             <i class="fa-solid fa-user-shield"></i> Add Staff Account
           </button>
         </div>
@@ -191,7 +175,7 @@
                 <td>abby@alavanza.com</td>
                 <td><span class="status-badge in-progress">Store Supervisor</span></td>
                 <td><span class="status-badge ready">Active</span></td>
-                <td><button type="button" class="action-btn secondary sm">Edit</button></td>
+                <td><button class="action-btn secondary sm">Edit</button></td>
               </tr>
             </tbody>
           </table>
