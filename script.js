@@ -36,17 +36,24 @@ function switchView(role) {
   }
 }
 
-function showSection(role, sectionId, element) {
-  const container = document.getElementById(`${role}-dashboard`);
-  const sections = container.querySelectorAll('.section-pane');
+function showSection(sectionId, element) {
+  const sections = document.querySelectorAll('.section-pane');
   sections.forEach(s => s.classList.remove('active'));
 
-  const targetSection = document.getElementById(`${role}-${sectionId}-section`);
-  if (targetSection) targetSection.classList.add('active');
+  const targetSection = document.getElementById(`${sectionId}-section`);
+  if (targetSection) {
+    targetSection.classList.add('active');
+  }
 
-  const navItems = element.parentElement.querySelectorAll('.nav-item');
-  navItems.forEach(n => n.classList.remove('active'));
-  element.classList.add('active');
+  const navContainer = (element && element.parentElement) || document.querySelector('.nav-list');
+  if (navContainer) {
+    const navItems = navContainer.querySelectorAll('.nav-item');
+    navItems.forEach(n => n.classList.remove('active'));
+  }
+
+  if (element) {
+    element.classList.add('active');
+  }
 }
 
 function openModal(id) {
