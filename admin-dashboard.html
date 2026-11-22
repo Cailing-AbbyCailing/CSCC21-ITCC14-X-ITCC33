@@ -8,10 +8,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="stylesa.css">
 </head>
 <body>
 
+  <!-- TOP HEADER -->
   <header class="top-nav">
     <div class="brand">
       <div class="brand-logo">
@@ -38,6 +39,7 @@
   </header>
 
   <div class="app-layout">
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="nav-section-title">ADMIN MENU</div>
       <ul class="nav-list">
@@ -62,8 +64,10 @@
       </div>
     </aside>
 
+    <!-- CONTENT -->
     <main class="content">
 
+      <!-- EXECUTIVE ANALYTICS -->
       <section id="analytics-section" class="section-pane active">
         <div class="pane-header">
           <div>
@@ -218,43 +222,6 @@
     </main>
   </div>
 
-  <!-- FLOATING CHAT TOGGLE BUTTON (Shown when console is hidden) -->
-  <button id="admin-chat-toggle-btn" type="button" onclick="toggleAdminChat(true)"
-    style="position:fixed; bottom:20px; right:20px; background:#0284c7; color:#fff; border:none; border-radius:50px; padding:12px 18px; font-weight:bold; font-size:14px; box-shadow:0 4px 12px rgba(0,0,0,0.25); cursor:pointer; z-index:9999; display:flex; align-items:center; gap:8px;">
-    <i class="fa-solid fa-comments"></i> Live Chat Console
-  </button>
-
-  <!-- COLLAPSIBLE LIVE MESSAGING CONSOLE (Hidden by default) -->
-  <div id="admin-chat-console" class="chat-console"
-    style="display:none; position:fixed; bottom:20px; right:20px; width:420px; max-width:92vw; background:#1e293b; color:#fff; border:1px solid #334155; border-radius:12px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.35); z-index:9999;">
-    
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0; font-size:16px;">Live Messaging Console</h3>
-      <button type="button" onclick="toggleAdminChat(false)" title="Minimize chat"
-        style="background:transparent; border:none; color:#94a3b8; font-size:16px; cursor:pointer; padding:2px 6px;">
-        <i class="fa-solid fa-minus"></i>
-      </button>
-    </div>
-
-    <div style="display:flex; gap:6px; margin-bottom:10px;">
-      <button type="button" id="tab-support-btn" onclick="switchChatChannel('support')"
-        style="flex:1; padding:6px 10px; border-radius:6px; border:none; background:#0284c7; color:#fff; font-weight:600; font-size:12px; cursor:pointer;">
-        Customer Support
-      </button>
-      <button type="button" id="tab-internal-btn" onclick="switchChatChannel('internal')"
-        style="flex:1; padding:6px 10px; border-radius:6px; border:none; background:#334155; color:#cbd5e1; font-weight:600; font-size:12px; cursor:pointer;">
-        Staff ↔ Admin Chat
-      </button>
-    </div>
-
-    <div id="staff-chat-messages" style="height:240px; overflow-y:auto; background:#0f172a; padding:12px; border-radius:8px; display:flex; flex-direction:column; gap:8px; margin-bottom:10px;"></div>
-
-    <form onsubmit="sendStaffOrAdminMsg(event)" style="display:flex; gap:8px;">
-      <input type="text" id="staff-chat-input" placeholder="Write a reply..." style="flex:1; padding:8px 10px; border-radius:6px; border:1px solid #334155; background:#0f172a; color:#fff; outline:none;" required>
-      <button type="submit" style="background:#0284c7; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Send</button>
-    </form>
-  </div>
-
   <!-- MODALS -->
   <div id="logout-modal" class="modal-overlay">
     <div class="modal-card logout-card">
@@ -269,93 +236,11 @@
         <p style="color: var(--text-muted); font-size: 0.85rem;">Thank you for using Alavanza Commercial Space Portal.</p>
       </div>
       <div class="modal-actions" style="justify-content: center; margin-top: 1rem;">
-        <button type="button" class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
+        <button class="action-btn primary" style="width: 100%;" onclick="closeModal('logout-modal')">Sign Back In</button>
       </div>
     </div>
   </div>
 
-  <script src="./chat-api.js"></script>
-  <script>
-    let activeChannel = 'support';
-
-    function toggleAdminChat(show) {
-      const consoleBox = document.getElementById('admin-chat-console');
-      const toggleBtn = document.getElementById('admin-chat-toggle-btn');
-      if (show) {
-        consoleBox.style.display = 'block';
-        toggleBtn.style.display = 'none';
-        renderStaffChat();
-      } else {
-        consoleBox.style.display = 'none';
-        toggleBtn.style.display = 'flex';
-      }
-    }
-
-    function switchChatChannel(channel) {
-      activeChannel = channel;
-      const supportBtn = document.getElementById('tab-support-btn');
-      const internalBtn = document.getElementById('tab-internal-btn');
-
-      if (channel === 'support') {
-        supportBtn.style.background = '#0284c7';
-        supportBtn.style.color = '#fff';
-        internalBtn.style.background = '#334155';
-        internalBtn.style.color = '#cbd5e1';
-      } else {
-        internalBtn.style.background = '#0284c7';
-        internalBtn.style.color = '#fff';
-        supportBtn.style.background = '#334155';
-        supportBtn.style.color = '#cbd5e1';
-      }
-
-      renderStaffChat();
-    }
-
-    function renderStaffChat() {
-      const box = document.getElementById('staff-chat-messages');
-      if (!box || typeof ChatAPI === 'undefined') return;
-      const msgs = ChatAPI.getMessages(activeChannel);
-      box.innerHTML = msgs.map(m => `
-        <div style="background:#1e293b; padding:8px 12px; border-radius:6px; border-left:3px solid ${m.senderRole === 'customer' ? '#38bdf8' : '#22c55e'};">
-          <div style="font-size:11px; color:#94a3b8;"><strong>${m.senderName}</strong> (${m.senderRole.toUpperCase()}) • ${m.timestamp}</div>
-          <div style="margin-top:4px; font-size:14px;">${m.text}</div>
-        </div>
-      `).join('');
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function sendStaffOrAdminMsg(e) {
-      e.preventDefault();
-      const input = document.getElementById('staff-chat-input');
-      if (!input || !input.value.trim() || typeof ChatAPI === 'undefined') return;
-
-      const adminBtn = document.getElementById('btn-admin-view');
-      const nameEl = document.getElementById('current-user-name');
-
-      const currentRole = adminBtn
-        ? (adminBtn.classList.contains('active') ? 'admin' : 'staff')
-        : 'admin';
-
-      const currentName = nameEl && nameEl.textContent.trim()
-        ? nameEl.textContent.trim()
-        : (currentRole === 'admin' ? 'Admin Manager' : 'Staff User');
-
-      ChatAPI.sendMessage({
-        channel: activeChannel,
-        senderName: currentName,
-        senderRole: currentRole,
-        text: input.value
-      });
-
-      input.value = '';
-      renderStaffChat();
-    }
-
-    if (typeof ChatAPI !== 'undefined') {
-      ChatAPI.onNewMessage(renderStaffChat);
-    }
-    document.addEventListener('DOMContentLoaded', renderStaffChat);
-  </script>
   <script src="script.js"></script>
 </body>
 </html>
