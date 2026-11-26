@@ -1,0 +1,16 @@
+{
+  "name": "acs-integrated-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared dependencies for all six Alavanza API servers",
+  "scripts": {
+    "check": "node --check auth-users-api/server.js && node --check auth-users-api/routes/authRoutes.js && node --check auth-users-api/routes/userRoutes.js && node --check auth-users-api/controllers/authController.js && node --check auth-users-api/controllers/userController.js && node --check shared/authMiddleware.js && node --check shared/serverConfig.js && node --check shared/supabase.js && node --check shared/pricing.js && node --check shared/audit.js && node --check shared/health.js && node --check services-pricing-api/server.js && node --check analytics-audit-api/server.js && node --check orders-fulfillment-api/server.js && node --check inventory-customer-api/server.js && node --check chat-api/server.js && node --check ../frontend/api-client.js && node --check ../frontend/auth.js && node --check ../frontend/customer.js && node --check ../frontend/dashboard-api.js && node --check ../frontend/chat-api.js && node --check ../frontend/chat-ui.js && node --check tests/pricing.test.js && node --check tests/health.test.js && node --check tests/audit.test.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.2",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0"
+  }
+}
