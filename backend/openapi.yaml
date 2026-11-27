@@ -1,0 +1,547 @@
+openapi: 3.1.0
+info:
+  title: Alavanza Commercial Space (ACS) API
+  version: 3.0.0
+  description: >
+    Revised API contract based on FINAL ACS SYSTEM STRUCTURE. One Express process
+    serves the API modules. The client catalog exposes Water and Laundry only.
+    Printing is staff/admin inventory management, not an orderable client service.
+servers:
+  - url: http://localhost:3000
+    description: Centralized local development server
+tags:
+  - name: Authentication
+  - name: Users
+  - name: Catalog
+  - name: Transactions
+  - name: Orders
+  - name: Inventory
+  - name: Customers
+  - name: Payments
+  - name: Analytics
+  - name: Notifications
+security:
+  - bearerAuth: []
+paths:
+  /:
+    get:
+      tags: [Authentication]
+      security: []
+      summary: API status
+      responses:
+        '200':
+          description: Central API is running
+  /health:
+    get:
+      tags: [Authentication]
+      security: []
+      summary: Central API and database health
+      responses:
+        '200': { description: Healthy }
+        '503': { description: Database unavailable }
+  /api/auth/register:
+    post:
+      tags: [Authentication]
+      security: []
+      summary: Register a customer account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [full_name, email, password]
+              properties:
+                full_name: { type: string }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                phone: { type: string }
+                default_address: { type: string }
+      responses:
+        '201': { description: Customer registered }
+        '400': { description: Invalid registration data }
+        '409': { description: Account already exists }
+  /api/auth/login:
+    post:
+      tags: [Authentication]
+      security: []
+      summary: Sign in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200': { description: Authenticated; returns access/session data }
+        '401': { description: Invalid credentials }
+  /api/auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Sign out
+      responses:
+        '200': { description: Signed out }
+  /api/auth/session:
+    get:
+      tags: [Authentication]
+      summary: Get current session
+      responses:
+        '200': { description: Current authenticated user }
+        '401': { description: Authentication required }
+  /api/users/me:
+    get:
+      tags: [Users]
+      summary: Get own profile
+      responses:
+        '200': { description: Profile returned }
+    put:
+      tags: [Users]
+      summary: Update own profile
+      responses:
+        '200': { description: Profile updated }
+  /api/services:
+    get:
+      tags: [Catalog]
+      security: []
+      summary: List customer-orderable service products
+      description: >
+        Public catalog is restricted to Water and Laundry. Printing must never
+        be returned here. Product options are read from inventory/catalog records,
+        not hardcoded in the frontend.
+      parameters:
+        - in: query
+          name: service_type
+          schema: { type: string, enum: [Water, Laundry] }
+        - in: query
+          name: available
+          schema: { type: boolean }
+      responses:
+        '200': { description: Water/Laundry catalog }
+        '400': { description: Invalid filter }
+    post:
+      tags: [Catalog]
+      summary: Add a Water or Laundry catalog item (staff/admin)
+      description: Printing supplies must be added through staff inventory, not this service catalog.
+      security: [{ bearerAuth: [] }]
+      responses:
+        '201': { description: Catalog item created }
+        '400': { description: Invalid service type or item }
+        '403': { description: Staff/admin required }
+  /api/services/{id}:
+    get:
+      tags: [Catalog]
+      security: []
+      summary: Get one Water/Laundry catalog item
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Catalog item }
+        '404': { description: Not found or not client-orderable }
+    patch:
+      tags: [Catalog]
+      summary: Update catalog item (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Catalog]
+      summary: Archive catalog item (admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Archived; historical order details remain intact }
+  /api/transactions:
+    get:
+      tags: [Transactions]
+      summary: Unified transaction management list
+      description: >
+        Staff/admin view containing both Online and Walk-in transactions in one
+        result set. Filter by source, service, status, or date range.
+      parameters:
+        - in: query
+          name: transaction_source
+          schema: { $ref: '#/components/schemas/TransactionSource' }
+        - in: query
+          name: service_type
+          schema: { $ref: '#/components/schemas/ServiceType' }
+        - in: query
+          name: status
+          schema: { type: string }
+        - in: query
+          name: from
+          schema: { type: string, format: date }
+        - in: query
+          name: to
+          schema: { type: string, format: date }
+      responses:
+        '200': { description: Unified transaction list }
+        '403': { description: Staff/admin required }
+    post:
+      tags: [Transactions]
+      summary: Encode a walk-in transaction (staff/admin)
+      description: >
+        Staff manually records walk-in transactions. A walk-in may still request
+        delivery; transaction_source and service_arrangement are independent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalkInTransaction'
+      responses:
+        '201': { description: Walk-in transaction recorded }
+        '400': { description: Invalid transaction or arrangement }
+        '403': { description: Staff/admin required }
+  /api/transactions/{id}:
+    get:
+      tags: [Transactions]
+      summary: Get transaction details
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Transaction details and line items }
+        '404': { description: Not found }
+    patch:
+      tags: [Transactions]
+      summary: Update transaction or status (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionUpdate'
+      responses:
+        '200': { description: Transaction updated; status history retained }
+        '400': { description: Invalid status transition }
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: List orders visible to the authenticated user
+      responses:
+        '200': { description: Orders list }
+    post:
+      tags: [Orders]
+      summary: Submit an online Water or Laundry order
+      description: >
+        Customer order submission. transaction_source is set by the server to
+        Online; clients must not be allowed to spoof Walk-in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OnlineOrder'
+      responses:
+        '201': { description: Order submitted }
+        '400': { description: Invalid order }
+  /api/orders/{id}:
+    get:
+      tags: [Orders]
+      summary: Get order and tracking details
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Order details }
+        '404': { description: Not found }
+    patch:
+      tags: [Orders]
+      summary: Update order (customer-owned fields or staff-managed fields)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TransactionUpdate' }
+      responses:
+        '200': { description: Updated }
+    delete:
+      tags: [Orders]
+      summary: Cancel an order in a cancellable status
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Order cancelled }
+  /api/inventory:
+    get:
+      tags: [Inventory]
+      summary: List inventory (staff/admin)
+      responses:
+        '200': { description: Inventory including Water, Laundry and Printing supplies }
+        '403': { description: Staff/admin required }
+    post:
+      tags: [Inventory]
+      summary: Add inventory item (staff/admin)
+      description: Includes printing paper, ink, toner and other supplies; not a client service.
+      responses:
+        '201': { description: Inventory item created }
+  /api/inventory/{id}:
+    get:
+      tags: [Inventory]
+      summary: Get inventory item (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Inventory item }
+    patch:
+      tags: [Inventory]
+      summary: Update inventory item (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Updated }
+  /api/inventory/{id}/stock-movements:
+    post:
+      tags: [Inventory]
+      summary: Record a stock-in or stock-out movement (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [direction, quantity]
+              properties:
+                direction: { type: string, enum: [IN, OUT] }
+                quantity: { type: integer, minimum: 1 }
+                note: { type: string }
+      responses:
+        '200': { description: Stock movement saved and audit-logged }
+        '409': { description: Stock-out exceeds current stock }
+  /api/customers:
+    get:
+      tags: [Customers]
+      summary: List customer records (staff/admin)
+      responses:
+        '200': { description: Customer directory }
+  /api/customers/{id}/orders:
+    get:
+      tags: [Customers]
+      summary: List a customer's unified order history (staff/admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Customer order history }
+  /api/payments:
+    post:
+      tags: [Payments]
+      summary: Submit or update payment details for an order/transaction
+      description: Records a payment attempt against an existing Water/Laundry order using only columns in the original payments table. Receipt metadata, when supplied, is recorded in audit_logs.details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [order_id, payment_method]
+              properties:
+                order_id: { type: string, format: uuid }
+                payment_method: { type: string, enum: [Cash, Cash on Delivery (COD), GCash Online Payment] }
+                reference_number: { type: string }
+                receipt_url: { type: string, format: uri }
+      responses:
+        '201': { description: Payment record created }
+        '409': { description: Payment was already finalized }
+  /api/payments/{id}:
+    get:
+      tags: [Payments]
+      summary: Retrieve a payment for an order (owner or staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Payment record }
+        '404': { description: Payment not found }
+  /api/payments/{id}/status:
+    patch:
+      tags: [Payments]
+      summary: Verify or update payment status (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Payment status updated }
+  /api/analytics/overview:
+    get:
+      tags: [Analytics]
+      summary: Admin dashboard overview
+      responses:
+        '200': { description: Overview metrics }
+  /api/analytics/revenue:
+    get:
+      tags: [Analytics]
+      summary: Revenue report
+      responses:
+        '200': { description: Revenue report }
+  /api/analytics/services:
+    get:
+      tags: [Analytics]
+      summary: Service report
+      responses:
+        '200': { description: Water and Laundry service metrics }
+  /api/delivery-schedules:
+    get:
+      tags: [Orders]
+      summary: List scheduled Water/Laundry transactions (staff/admin)
+      description: Returns the staff schedule queue from orders.scheduled_at. It does not publish or reserve shared capacity slots.
+      responses:
+        '200': { description: Scheduled transactions }
+        '403': { description: Staff/admin required }
+  /api/delivery-schedules/{id}:
+    patch:
+      tags: [Orders]
+      summary: Update the schedule on an existing order (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Order schedule updated }
+    delete:
+      tags: [Orders]
+      summary: Clear the schedule from an existing order (staff/admin)
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Order schedule cleared }
+  /api/notifications:
+    get:
+      tags: [Notifications]
+      summary: List the latest order notifications for the current user
+      description: Reads customer notification events stored in audit_logs.details. The laundry-ready notification starts the MasterFile's seven-day pickup period. The storage-fee amount remains unset until specified.
+      responses:
+        '200': { description: Notifications }
+  /api/notifications/{id}/read:
+    patch:
+      tags: [Notifications]
+      summary: Mark a notification audit event as read
+      parameters:
+        - $ref: '#/components/parameters/Uuid'
+      responses:
+        '200': { description: Notification marked read }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    Uuid:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+  schemas:
+    TransactionSource:
+      type: string
+      enum: [Online, Walk-in]
+    ServiceType:
+      type: string
+      enum: [Water, Laundry]
+    WaterArrangement:
+      type: string
+      enum:
+        - walk_in_refill_pickup
+        - walk_in_refill_delivery
+        - home_pickup_delivery
+        - home_pickup_station_pickup
+    LaundryArrangement:
+      type: string
+      enum:
+        - drop_off_pickup
+        - drop_off_home_delivery
+        - home_pickup_return_delivery
+        - home_pickup_station_pickup
+    OnlineWaterArrangement:
+      type: string
+      description: The staff-only Walk-in Refill & Pickup option is excluded from the client portal.
+      enum:
+        - walk_in_refill_delivery
+        - home_pickup_delivery
+        - home_pickup_station_pickup
+    OnlineLaundryArrangement:
+      type: string
+      description: The staff-only Drop-off & Pickup option is excluded from the client portal.
+      enum:
+        - drop_off_home_delivery
+        - home_pickup_return_delivery
+        - home_pickup_station_pickup
+    OnlineOrder:
+      type: object
+      required: [service_type, service_arrangement, service_id]
+      properties:
+        service_type: { $ref: '#/components/schemas/ServiceType' }
+        transaction_source:
+          type: string
+          const: Online
+          readOnly: true
+          description: Set by the API from the authenticated customer session.
+        service_arrangement:
+          oneOf:
+            - $ref: '#/components/schemas/OnlineWaterArrangement'
+            - $ref: '#/components/schemas/OnlineLaundryArrangement'
+        service_id: { type: string, format: uuid, description: Active Water/Laundry catalog item from public.inventory }
+        quantity: { type: integer, minimum: 1, description: Required for Water orders; Bulk refill requires at least 10 gallons and is Walk-in only }
+        refill_type: { type: string, enum: [regular, bulk], default: regular }
+        weight_kg: { type: number, exclusiveMinimum: 0, description: Required for Laundry; no overall booking limit is imposed, each load is at most 7 kg }
+        pickup_address: { type: string, description: Required for home-pickup arrangements }
+        delivery_address: { type: string, description: Required for arrangements that deliver to the customer }
+        scheduled_at: { type: string, format: date-time, description: Optional requested pickup/delivery date and time stored on the order }
+        payment_method: { type: string, enum: [Cash on Delivery (COD), GCash Online Payment] }
+        reference_number: { type: string }
+        receipt_url: { type: string, format: uri }
+        detergent_id: { type: string, format: uuid, description: Laundry detergent product ID from inventory }
+        fabric_conditioner_id: { type: string, format: uuid, description: Laundry conditioner product ID from inventory }
+        bleach_requested: { type: boolean, default: false }
+        bleach_id: { type: string, format: uuid, description: Required when bleach_requested is true }
+        notes: { type: string, description: Special fabric instructions or pickup notes }
+      description: Customer submits Water or Laundry. The server fixes transaction_source to Online.
+    WalkInTransaction:
+      type: object
+      required: [service_type, service_arrangement, service_id]
+      properties:
+        service_type: { $ref: '#/components/schemas/ServiceType' }
+        transaction_source:
+          type: string
+          const: Walk-in
+          readOnly: true
+        service_arrangement:
+          oneOf:
+            - $ref: '#/components/schemas/WaterArrangement'
+            - $ref: '#/components/schemas/LaundryArrangement'
+        service_id: { type: string, format: uuid }
+        customer_id: { type: [string, 'null'], format: uuid }
+        customer_name: { type: string }
+        customer_phone: { type: string }
+        quantity: { type: integer, minimum: 1, description: Required for Water; Bulk refill requires at least 10 gallons }
+        refill_type: { type: string, enum: [regular, bulk], default: regular }
+        weight_kg: { type: number, exclusiveMinimum: 0, description: Required for Laundry; capacity is calculated at 7 kg per load }
+        pickup_address: { type: string }
+        delivery_address: { type: string }
+        scheduled_at: { type: string, format: date-time, description: Requested pickup/delivery date and time; not required for staff-only station drop-off/pickup }
+        payment_method: { type: string, enum: [Cash, Cash on Delivery (COD), GCash Online Payment] }
+        reference_number: { type: string }
+        receipt_url: { type: string, format: uri }
+        detergent_id: { type: string, format: uuid }
+        fabric_conditioner_id: { type: string, format: uuid }
+        bleach_requested: { type: boolean, default: false }
+        bleach_id: { type: string, format: uuid }
+        schedule_notes: { type: string }
+        notes: { type: string }
+      description: Staff/admin manually encodes a Walk-in transaction. A customer account is optional.
+    TransactionUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [Pending, In Progress, Out for Delivery, Ready for Station Pickup, Completed, Cancelled]
+        note: { type: string, description: Optional staff note recorded with a status change }
+        scheduled_at: { type: [string, 'null'], format: date-time }
+        notes: { type: string }
+        service_arrangement: { readOnly: true, type: string, description: Fixed when transaction is created }

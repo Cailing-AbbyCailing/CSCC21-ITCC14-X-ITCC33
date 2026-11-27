@@ -1,0 +1,123 @@
+function switchView(viewId, event) {
+            document.querySelectorAll('.panel-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(viewId).classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            const titles = {
+                'choose-service': ['HOME', 'Select your service, fill out order details, and track your requests.'],
+                'order-tracker': ['Track Order Status', 'Monitor active water orders and laundry turnaround states.'],
+                'account-settings': ['Account Settings', 'Manage your profile and account preferences.']
+            };
+            document.getElementById('header-title').innerText = titles[viewId][0];
+            document.getElementById('header-desc').innerText = titles[viewId][1];
+        }
+
+        function selectServiceTab(type) {
+            const promptBox = document.getElementById('no-service-prompt');
+            if (promptBox) {
+                promptBox.style.display = 'none';
+            }
+
+            document.getElementById('tab-water-btn').classList.remove('active');
+            document.getElementById('tab-laundry-btn').classList.remove('active');
+
+            document.getElementById('water-form-content').classList.remove('active');
+            document.getElementById('laundry-form-content').classList.remove('active');
+
+            if (type === 'water') {
+                document.getElementById('tab-water-btn').classList.add('active');
+                document.getElementById('water-form-content').classList.add('active');
+            } else if (type === 'laundry') {
+                document.getElementById('tab-laundry-btn').classList.add('active');
+                document.getElementById('laundry-form-content').classList.add('active');
+            }
+        }
+
+        function toggleSchedule(service) {
+            const toggleVal = document.getElementById(service + 'DeliveryToggle').value;
+            const scheduleBox = document.getElementById(service + 'ScheduleBox');
+            const addressBox = document.getElementById(service + 'AddressBox');
+            
+            const showFields = (toggleVal === 'yes') ? 'flex' : 'none';
+            if (scheduleBox) scheduleBox.style.display = showFields;
+            if (addressBox) addressBox.style.display = showFields;
+        }
+
+        let signinRedirectUrl = "customer.html";
+
+function openSigninModal(redirectUrl = "customer.html", autoRedirectMs = 0) {
+    signinRedirectUrl = redirectUrl;
+
+    const modal = document.getElementById("signin-modal-backdrop");
+    const continueBtn = document.getElementById("signin-continue-btn");
+
+    if (continueBtn) {
+        continueBtn.href = signinRedirectUrl;
+    }
+
+    if (modal) {
+        modal.hidden = false;
+    }
+
+    if (autoRedirectMs > 0) {
+        setTimeout(() => {
+            window.location.href = signinRedirectUrl;
+        }, autoRedirectMs);
+    }
+}
+
+function closeSigninModal() {
+    const modal = document.getElementById("signin-modal-backdrop");
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
+document.addEventListener("click", function (event) {
+    const modal = document.getElementById("signin-modal-backdrop");
+    if (modal && !modal.hidden && event.target === modal) {
+        closeSigninModal();
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeSigninModal();
+    }
+});
+
+        function openLogoutModal(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal) {
+        modal.hidden = false;
+    }
+}
+
+function closeLogoutModal() {
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal && !modal.hidden && event.target === modal) {
+        closeLogoutModal();
+    }
+});
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeLogoutModal();
+    }
+});
