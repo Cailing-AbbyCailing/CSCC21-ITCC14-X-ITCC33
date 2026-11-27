@@ -37,6 +37,27 @@
     </style>
 </head>
 <body>
+    <!-- Signed In Modal -->
+<div id="signin-modal-backdrop" class="logout-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="signin-modal-title" hidden>
+    <div class="logout-modal-card">
+        <div class="logout-modal-header">
+            <h2 id="signin-modal-title">Signed In</h2>
+            <button type="button" class="logout-modal-close" onclick="closeSigninModal()" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="logout-modal-body">
+            <div class="logout-check-badge">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3>You have signed in</h3>
+            <p>Welcome back to Alavanza Commercial Space Portal.</p>
+        </div>
+
+        <a href="customer.html" id="signin-continue-btn" class="logout-signin-btn">Continue to Portal</a>
+    </div>
+</div>
 
     <div class="dashboard-container">
         <!-- Sidebar Navigation -->
@@ -78,10 +99,10 @@
 
             <!-- Exit Button -->
             <div class="sidebar-footer">
-                <a href="index.html" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Exit
-                </a>
-            </div>
+    <a href="index.html" class="logout-btn" onclick="openLogoutModal(event)">
+        <i class="fa-solid fa-right-from-bracket"></i> Exit
+    </a>
+</div>
         </aside>
 
         <!-- Main Content Area -->
@@ -382,5 +403,28 @@
   ChatAPI.onNewMessage(renderCustomerChat);
   document.addEventListener('DOMContentLoaded', renderCustomerChat);
 </script>
+   
+    <!-- Signed Out Modal -->
+<div id="logout-modal-backdrop" class="logout-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title" hidden>
+    <div class="logout-modal-card">
+        <div class="logout-modal-header">
+            <h2 id="logout-modal-title">Signed Out</h2>
+            <button type="button" class="logout-modal-close" onclick="closeLogoutModal()" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="logout-modal-body">
+            <div class="logout-check-badge">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3>You have logged out</h3>
+            <p>Thank you for using Alavanza Commercial Space Portal.</p>
+        </div>
+
+        <a href="index.html" class="logout-signin-btn">Sign Back In</a>
+    </div>
+</div>
+
 </body>
 </html>
