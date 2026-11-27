@@ -1,12 +1,14 @@
-        function switchView(viewId, event) {
+function switchView(viewId, event) {
             document.querySelectorAll('.panel-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.sidebar-nav .nav-item').forEach(btn => btn.classList.remove('active'));
 
             document.getElementById(viewId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
 
             const titles = {
-                'choose-service': ['Main Menu (Home)', 'Select your service, fill out order details, and track your requests.'],
+                'choose-service': ['HOME', 'Select your service, fill out order details, and track your requests.'],
                 'order-tracker': ['Track Order Status', 'Monitor active water orders and laundry turnaround states.'],
                 'account-settings': ['Account Settings', 'Manage your profile and account preferences.']
             };
