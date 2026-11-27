@@ -4,14 +4,12 @@ function showSection(roleOrSection, sectionOrElement, maybeElement) {
   let scopeContainer = document.querySelector('main.content') || document;
 
   if (typeof sectionOrElement === 'string') {
-    // 3-arg call: showSection('staff', 'services', this)
     const role = roleOrSection;
     sectionId = sectionOrElement;
     clickedEl = maybeElement;
     const roleDash = document.getElementById(`${role}-dashboard`);
     if (roleDash) scopeContainer = roleDash;
   } else {
-    // 2-arg call: showSection('services', this)
     sectionId = roleOrSection;
     clickedEl = sectionOrElement;
   }
@@ -37,10 +35,56 @@ function showSection(roleOrSection, sectionOrElement, maybeElement) {
     clickedEl.classList.add('active');
   }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   const dateElement = document.getElementById('current-date-str');
   if (dateElement) {
-    dateElement.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    dateElement.textContent = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+
+  // Password visibility toggle on login form
+  const togglePwdBtn = document.querySelector('.toggle-password');
+  if (togglePwdBtn) {
+    togglePwdBtn.addEventListener('click', () => {
+      const pwdInput = togglePwdBtn.parentElement?.querySelector('input');
+      const icon = togglePwdBtn.querySelector('i');
+      if (!pwdInput) return;
+
+      const isHidden = pwdInput.type === 'password';
+      pwdInput.type = isHidden ? 'text' : 'password';
+      if (icon) {
+        icon.classList.toggle('fa-eye', !isHidden);
+        icon.classList.toggle('fa-eye-slash', isHidden);
+      }
+    });
+  }
+
+  // Login form submission: show success pop-up modal, then redirect
+  const loginForm = document.querySelector('.login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const emailInput = loginForm.querySelector('input[type="email"]');
+      const email = (emailInput?.value || '').trim().toLowerCase();
+      const targetDashboard = email.includes('admin')
+        ? './admin-dashboard.html'
+        : './staff-dashboard.html';
+
+      const successModal = document.getElementById('login-success-modal');
+      if (successModal) {
+        successModal.classList.add('active');
+        setTimeout(() => {
+          window.location.href = targetDashboard;
+        }, 1500);
+      } else {
+        window.location.href = targetDashboard;
+      }
+    });
   }
 });
 
@@ -54,44 +98,26 @@ function switchView(role) {
   const userName = document.getElementById('current-user-name');
   const userRole = document.getElementById('current-user-role');
 
+  if (!staffDashboard || !adminDashboard) return;
+
   if (role === 'staff') {
     staffDashboard.classList.remove('hidden');
     adminDashboard.classList.add('hidden');
-    staffNav.classList.remove('hidden');
-    adminNav.classList.add('hidden');
-    btnStaff.classList.add('active');
-    btnAdmin.classList.remove('active');
-    userName.textContent = 'Staff User';
-    userRole.textContent = 'Operations Staff';
+    staffNav?.classList.remove('hidden');
+    adminNav?.classList.add('hidden');
+    btnStaff?.classList.add('active');
+    btnAdmin?.classList.remove('active');
+    if (userName) userName.textContent = 'Staff User';
+    if (userRole) userRole.textContent = 'Operations Staff';
   } else {
     staffDashboard.classList.add('hidden');
     adminDashboard.classList.remove('hidden');
-    staffNav.classList.add('hidden');
-    adminNav.classList.remove('hidden');
-    btnAdmin.classList.add('active');
-    btnStaff.classList.remove('active');
-    userName.textContent = 'Admin Manager';
-    userRole.textContent = 'System Administrator';
-  }
-}
-
-function showSection(sectionId, element) {
-  const sections = document.querySelectorAll('.section-pane');
-  sections.forEach(s => s.classList.remove('active'));
-
-  const targetSection = document.getElementById(`${sectionId}-section`);
-  if (targetSection) {
-    targetSection.classList.add('active');
-  }
-
-  const navContainer = (element && element.parentElement) || document.querySelector('.nav-list');
-  if (navContainer) {
-    const navItems = navContainer.querySelectorAll('.nav-item');
-    navItems.forEach(n => n.classList.remove('active'));
-  }
-
-  if (element) {
-    element.classList.add('active');
+    staffNav?.classList.add('hidden');
+    adminNav?.classList.remove('hidden');
+    btnAdmin?.classList.add('active');
+    btnStaff?.classList.remove('active');
+    if (userName) userName.textContent = 'Admin Manager';
+    if (userRole) userRole.textContent = 'System Administrator';
   }
 }
 
@@ -112,4 +138,3 @@ function handleFormSubmit(event, successMsg) {
   const modalOverlay = event.target.closest('.modal-overlay');
   if (modalOverlay) modalOverlay.classList.remove('active');
 }
-
