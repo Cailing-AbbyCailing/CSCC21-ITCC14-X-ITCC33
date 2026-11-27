@@ -1,9 +1,0 @@
-# Secrets
-.env
-**/.env
-*.local
-
-# Dependencies and logs
-**/node_modules/
-**/npm-debug.log*
-.DS_Store

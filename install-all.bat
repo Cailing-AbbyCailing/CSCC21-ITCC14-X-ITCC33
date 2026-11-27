@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0backend"
-echo Installing shared dependencies for all six APIs...
+echo Installing dependencies for the centralized ACS API...
 call npm install
 if errorlevel 1 (
   echo.
@@ -10,5 +10,5 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo All shared backend dependencies installed successfully.
+echo ACS API dependencies installed successfully.
 pause
