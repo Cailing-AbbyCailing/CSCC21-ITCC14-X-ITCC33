@@ -46,3 +46,78 @@ function switchView(viewId, event) {
             if (scheduleBox) scheduleBox.style.display = showFields;
             if (addressBox) addressBox.style.display = showFields;
         }
+
+        let signinRedirectUrl = "customer.html";
+
+function openSigninModal(redirectUrl = "customer.html", autoRedirectMs = 0) {
+    signinRedirectUrl = redirectUrl;
+
+    const modal = document.getElementById("signin-modal-backdrop");
+    const continueBtn = document.getElementById("signin-continue-btn");
+
+    if (continueBtn) {
+        continueBtn.href = signinRedirectUrl;
+    }
+
+    if (modal) {
+        modal.hidden = false;
+    }
+
+    if (autoRedirectMs > 0) {
+        setTimeout(() => {
+            window.location.href = signinRedirectUrl;
+        }, autoRedirectMs);
+    }
+}
+
+function closeSigninModal() {
+    const modal = document.getElementById("signin-modal-backdrop");
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
+document.addEventListener("click", function (event) {
+    const modal = document.getElementById("signin-modal-backdrop");
+    if (modal && !modal.hidden && event.target === modal) {
+        closeSigninModal();
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeSigninModal();
+    }
+});
+
+        function openLogoutModal(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal) {
+        modal.hidden = false;
+    }
+}
+
+function closeLogoutModal() {
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal) {
+        modal.hidden = true;
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const modal = document.getElementById('logout-modal-backdrop');
+    if (modal && !modal.hidden && event.target === modal) {
+        closeLogoutModal();
+    }
+});
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeLogoutModal();
+    }
+});
