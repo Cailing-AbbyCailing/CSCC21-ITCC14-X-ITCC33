@@ -15,7 +15,11 @@ const LEGACY_TABLES = new Set([
 function walk(directory) {
     return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
         const full = path.join(directory, entry.name);
-        if (entry.isDirectory()) return entry.name === 'tests' ? [] : walk(full);
+        if (entry.isDirectory()) {
+    return ['tests', 'node_modules', '.git'].includes(entry.name)
+        ? []
+        : walk(full);
+}
         return entry.isFile() && entry.name.endsWith('.js') ? [full] : [];
     });
 }

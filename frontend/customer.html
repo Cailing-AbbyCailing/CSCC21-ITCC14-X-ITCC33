@@ -78,9 +78,9 @@
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="sidebar-user-info">
-                        <h2>User Name </h2>
-                        <span>Account</span>
-                    </div>
+                    <h2 id="customer-sidebar-name">User Name</h2>
+                    <span id="customer-sidebar-role">Account</span>
+                 </div>
                 </div>
 
                 <!-- Navigation Links -->
@@ -142,11 +142,8 @@
                             <div class="form-group">
                                 <label>Water Service Type</label>
                                 <select id="waterType" onchange="calculateWaterTotal()">
-                                    <option value="15">Regular Water Refill - ₱15 / gallon</option>
-                                    <option value="10">Bulk Water Refill (Min. 10 gal) - ₱10 / gallon</option>
-                                    <option value="30">Water Delivery (Est. total) - ₱30 / gallon</option>
-                                    <option value="150">Brand-new Water Gallon with Water - Varies</option>
-                                </select>
+                                  <option value="">Loading water services...</option>
+                               </select>
                             </div>
                             <div class="form-group">
                                 <label>Quantity</label>
@@ -156,106 +153,168 @@
 
                         <div class="divider-line"></div>
 
-                        <h3>Fill Order Details & Logistics</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Schedule Pickup / Delivery?</label>
-                                <select id="waterDeliveryToggle" onchange="toggleSchedule('water')">
-                                    <option value="no">Home Pickup & Delivery </option>
-                                    <option value="yes">Home Pickup & Station Pickup</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="waterScheduleBox" style="display: none;">
-                                <label>Select Date & Time</label>
-                                <input type="datetime-local">
-                            </div>
-                            <div class="form-group" id="waterAddressBox" style="display: none;">
-                                <label>Delivery Address / Location</label>
-                                <input type="text" placeholder="Enter your address">
-                            </div>
-                            <div class="form-group">
-                                <label>Choose Payment Method</label>
-                                <select>
-                                    <option>Cash on Delivery (COD)</option>
-                                    <option>GCash Online Payment</option>
-                                </select>
-                            </div>
-                        </div>
+                        
+<h3>Fill Order Details & Logistics</h3>
+<div class="form-grid">
+    <div class="form-group">
+        <label>Fulfillment Arrangement</label>
+        <select id="waterDeliveryToggle" onchange="toggleSchedule('water')">
+            <option value="home_pickup_delivery">Home Pickup & Delivery</option>
+            <option value="home_pickup_station_pickup">Home Pickup & Station Pickup</option>
+        </select>
+    </div>
 
-                        <div class="order-submit-row">
-                            <div class="estimated-price">
-                                <span>Estimated Total:</span>
-                                <h3 id="waterDisplayTotal">₱15.00</h3>
-                            </div>
-                            <button type="button" class="btn-submit-order" onclick="alert('Water Order Submitted Successfully!')">
-                                <i class="fa-solid fa-paper-plane"></i> Submit Water Order
-                            </button>
-                        </div>
-                    </div>
+    <div class="form-group" id="waterScheduleBox">
+        <label>Select Date & Time (Optional)</label>
+        <input type="datetime-local" id="waterScheduledAt">
+    </div>
 
-                    <!-- LAUNDRY FORM (HIDDEN UNTIL CLICKED) -->
-                    <div id="laundry-form-content" class="order-form-box service-content">
-                        <h3>Laundry Station Options & Capacity</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Loads (Max 7kg per load)</label>
-                                <input type="number" id="laundryLoads" min="1" max="7" value="1" onkeydown="return false;" oninput="calculateLaundryTotal()">
-                            </div>
-                            <div class="form-group">
-                                <label>Preferred Detergent</label>
-                                <select>
-                                    <option>Standard Fresh Detergent</option>
-                                    <option>Hypoallergenic Soap</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Preferred Fabric Conditioner</label>
-                                <select>
-                                    <option>Sunrise Fresh Softener</option>
-                                    <option>Lavender Comfort</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="form-group">
+        <label>Pickup Address</label>
+        <input type="text" id="waterPickupAddress" placeholder="Enter pickup address">
+    </div>
 
-                        <div class="divider-line"></div>
+    <div class="form-group" id="waterAddressBox">
+        <label>Delivery Address</label>
+        <input type="text" id="waterDeliveryAddress" placeholder="Enter delivery address">
+    </div>
 
-                        <h3>Fill Order Details & Logistics</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Schedule Pickup / Delivery?</label>
-                                <select id="laundryDeliveryToggle" onchange="toggleSchedule('laundry')">
-                                    <option value="no">Home Pickup & Delivery</option>
-                                    <option value="yes">Home Pickup & Station Pickup</option>
-                                </select>
-                            </div>
-                            <div class="form-group" id="laundryScheduleBox" style="display: none;">
-                                <label>Select Date & Time</label>
-                                <input type="datetime-local">
-                            </div>
-                            <div class="form-group" id="laundryAddressBox" style="display: none;">
-                                <label>Delivery Address / Location</label>
-                                <input type="text" placeholder="Enter your address">
-                            </div>
-                            <div class="form-group">
-                                <label>Choose Payment Method</label>
-                                <select>
-                                    <option>Cash on Delivery (COD)</option>
-                                    <option>GCash Online Payment</option>
-                                </select>
-                            </div>
-                        </div>
+    <div class="form-group">
+        <label>Choose Payment Method</label>
+        <select id="waterPaymentMethod">
+            <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+            <option value="GCash Online Payment">GCash Online Payment</option>
+        </select>
+    </div>
 
-                        <div class="order-submit-row">
-                            <div class="estimated-price">
-                                <span>Estimated Total:</span>
-                                <h3 id="laundryDisplayTotal">₱180.00</h3>
-                            </div>
-                            <button type="button" class="btn-submit-order" onclick="alert('Laundry Booking Submitted Successfully!')">
-                                <i class="fa-solid fa-paper-plane"></i> Submit Laundry Booking
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <div class="form-group">
+        <label>GCash Reference Number (if applicable)</label>
+        <input type="text" id="waterPaymentReference" placeholder="Enter GCash reference number">
+    </div>
+</div>
+
+<div class="order-submit-row">
+    <div class="estimated-price">
+        <span>Estimated Total:</span>
+        <h3 id="waterDisplayTotal">₱0.00</h3>
+    </div>
+    <button type="button" class="btn-submit-order" id="submit-water-order">
+        <i class="fa-solid fa-paper-plane"></i> Submit Water Order
+    </button>
+</div>
+</div>
+
+
+                 
+                    
+<!-- LAUNDRY FORM (HIDDEN UNTIL CLICKED) -->
+<div id="laundry-form-content" class="order-form-box service-content">
+    <h3>Laundry Station Options & Capacity</h3>
+
+    <div class="form-group">
+        <label>Laundry Service</label>
+        <select id="laundryService" onchange="calculateLaundryTotal()">
+            <option value="">Loading laundry services...</option>
+        </select>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Laundry Weight (kg)</label>
+            <input type="number" id="laundryLoads" min="1" step="1" value="1"
+                oninput="calculateLaundryTotal()">
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Detergent</label>
+            <select id="laundryDetergent">
+                <option value="">No preference</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Fabric Conditioner</label>
+            <select id="laundryConditioner">
+                <option value="">No preference</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+    <label>Bleach</label>
+    <select id="laundryBleach" onchange="toggleBleachOption()">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+    </select>
+</div>
+
+<div class="form-group" id="laundryBleachProductBox" style="display: none;">
+    <label>Preferred Bleach Product</label>
+    <select id="laundryBleachProduct">
+        <option value="">Select Bleach Product</option>
+    </select>
+</div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <h3>Fill Order Details & Logistics</h3>
+
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Fulfillment Arrangement</label>
+            <select id="laundryDeliveryToggle" onchange="toggleSchedule('laundry')">
+                <option value="drop_off_home_delivery">Drop-off & Home Delivery</option>
+                <option value="home_pickup_return_delivery">Home Pickup & Return Delivery</option>
+                <option value="home_pickup_station_pickup">Home Pickup & Station Pickup</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="laundryScheduleBox">
+            <label>Select Date & Time (Optional)</label>
+            <input type="datetime-local" id="laundryScheduledAt">
+        </div>
+
+        <div class="form-group" id="laundryPickupAddressBox">
+            <label>Pickup Address</label>
+            <input type="text" id="laundryPickupAddress"
+                placeholder="Enter pickup address">
+        </div>
+
+        <div class="form-group" id="laundryAddressBox">
+            <label>Delivery Address</label>
+            <input type="text" id="laundryDeliveryAddress"
+                placeholder="Enter delivery address">
+        </div>
+
+        <div class="form-group">
+            <label>Choose Payment Method</label>
+            <select id="laundryPaymentMethod">
+                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                <option value="GCash Online Payment">GCash Online Payment</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>GCash Reference Number (if applicable)</label>
+            <input type="text" id="laundryPaymentReference"
+                placeholder="Enter GCash reference number">
+        </div>
+    </div>
+
+    <div class="order-submit-row">
+        <div class="estimated-price">
+            <span>Estimated Total:</span>
+            <h3 id="laundryDisplayTotal">₱0.00</h3>
+        </div>
+
+        <button type="button" class="btn-submit-order" id="submit-laundry-order">
+            <i class="fa-solid fa-paper-plane"></i> Submit Laundry Booking
+        </button>
+    </div>
+</div>
+
+
+            
 
                 <!-- VIEW 2: TRACK ORDER STATUS -->
                 <div id="order-tracker" class="panel-section">
@@ -284,19 +343,19 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input type="text" value=" ">
+                                <input type="text" id="customer-full-name" value="" placeholder="Full Name">
                             </div>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="email" value=" ">
+                                <input type="email" id="customer-email" value="" placeholder="Email Address" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Contact Number</label>
-                                <input type="text" value=" ">
+                                <input type="text" id="customer-phone" value="" placeholder="Contact Number">
                             </div>
                             <div class="form-group">
                                 <label>Default Address</label>
-                                <input type="text" value=" ">
+                                <input type="text" id="customer-address" value="" placeholder="Default Address">
                             </div>
                         </div>
 
@@ -316,7 +375,7 @@
 
                         <div class="order-submit-row">
                             <span>Changes update instantly.</span>
-                            <button type="button" class="btn-submit-order" onclick="alert('Account settings updated successfully!')">
+                            <button type="button" class="btn-submit-order" id="save-customer-profile">
                                 <i class="fa-solid fa-floppy-disk"></i> Save Changes
                             </button>
                         </div>

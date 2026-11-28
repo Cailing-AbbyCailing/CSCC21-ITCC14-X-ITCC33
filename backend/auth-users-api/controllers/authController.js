@@ -118,6 +118,7 @@ exports.login = async (req, res) => {
             password
         });
 
+
         if (error || !data.user || !data.session) {
             return res.status(401).json({
                 success: false,

@@ -212,7 +212,7 @@ async function createOrder(req, res, source) {
   };
   const payload = {
     user_id: customerId,
-    service_type: serviceType,
+    service_type: serviceType.toLowerCase(),
     order_details: details,
     fulfillment_mode: arrangement.fulfillment,
     scheduled_at: schedule.value,
@@ -229,10 +229,25 @@ async function createOrder(req, res, source) {
   const { data: order, error: orderError } = await supabaseAdmin.from('orders').insert(payload).select('*').single();
   if (orderError) throw orderError;
 
-  const paymentPayload = {
-    order_id: order.id, payment_method: method, amount: total,
-    payment_status: source === 'Walk-in' && method === 'Cash' ? 'verified' : (method === 'GCash Online Payment' ? 'submitted' : 'pending'),
-    received_by: source === 'Walk-in' && method === 'Cash' ? req.user.id : null,
+    const paymentPayload = {
+    order_id: order.id,
+    payment_method:
+      method === 'Cash on Delivery (COD)' || method === 'Cash'
+        ? 'cod'
+        : method === 'GCash Online Payment'
+          ? 'gcash'
+          : method.toLowerCase(),
+    amount: total,
+    payment_status:
+      source === 'Walk-in' && method === 'Cash'
+        ? 'verified'
+        : method === 'GCash Online Payment'
+          ? 'submitted'
+          : 'pending',
+    received_by:
+      source === 'Walk-in' && method === 'Cash'
+        ? req.user.id
+        : null,
     reference_number: String(b.reference_number || '').trim() || null
   };
   const { data: payment, error: paymentError } = await supabaseAdmin.from('payments').insert(paymentPayload).select(PAYMENT_FIELDS).single();
